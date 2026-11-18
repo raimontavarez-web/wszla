@@ -31,12 +31,6 @@
           "name": "Midjourney",
           "url": "https://www.midjourney.com",
           "desc": "文生图"
-        },
-        {
-          "name": "deepseek开放平台",
-          "url": "https://platform.deepseek.com/usage",
-          "desc": "开放平台",
-          "pin": true
         }
       ]
     },
@@ -68,6 +62,12 @@
           "name": "regex101",
           "url": "https://regex101.com",
           "desc": "正则调试"
+        },
+        {
+          "name": "deepseek开放平台",
+          "url": "https://platform.deepseek.com/usage",
+          "desc": "开放平台",
+          "pin": true
         }
       ]
     },
