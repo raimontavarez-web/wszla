@@ -38,6 +38,18 @@ button.small{padding:5px 10px;font-size:.78rem}
 .ok{color:#0a7d32}
 .err{color:#c0392b}
 .pill{display:inline-block;padding:2px 9px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-size:.7rem;font-weight:600;margin-left:6px}
+.lock{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:#f7f5f1;padding:24px}
+.lock.hidden{display:none!important}
+.lock-card{width:min(370px,100%);background:#fff;border:1px solid #e9e4db;border-radius:18px;padding:26px 24px;box-shadow:0 24px 60px -30px rgba(20,18,12,.35)}
+.lock-card strong{font-size:1rem;color:#1b1a17}
+.lock-card p{margin:0 0 18px;font-size:.8rem;color:#8a8578}
+.lock-card label{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;font-size:.78rem;color:#8a8578;font-weight:600}
+.lock-card input{width:100%;padding:11px 12px;border:1px solid #ddd6ca;border-radius:10px;background:#fdfcfa;color:#1b1a17;font-size:1rem;font-family:inherit}
+.lock-card input:focus{outline:none;border-color:#ff5a36;box-shadow:0 0 0 4px rgba(255,90,54,.13)}
+.lock-card button{width:100%;margin-top:6px;padding:12px 0;border:0;border-radius:10px;background:#ff5a36;color:#fff;font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit}
+.lock-err{min-height:18px;font-size:.78rem;color:#c0392b;margin-top:10px}
+.brand-lock{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.brand-lock i{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#ff7a45,#ec3e12);display:grid;place-items:center;color:#fff;font-style:normal;font-weight:700}
 .hint{font-size:.78rem;color:var(--muted);margin:6px 0 0}
 .bar{display:flex;gap:10px;margin-top:16px}
 /* ---------- 手机端 ---------- */
@@ -73,6 +85,16 @@ button.small{padding:5px 10px;font-size:.78rem}
 </style>
 </head>
 <body>
+<div class="lock" id="lock">
+  <div class="lock-card">
+    <div class="brand-lock"><i>W</i><strong>WSZLA 导航后台</strong></div>
+    <p>请输入账号和密码</p>
+    <label>账号<input type="text" id="lockUser" autocomplete="username"></label>
+    <label>密码<input type="password" id="lockPass" autocomplete="current-password"></label>
+    <button id="lockBtn">登录</button>
+    <div class="lock-err" id="lockErr"></div>
+  </div>
+</div>
 <div class="wrap">
   <header>
     <h1>导航后台</h1>
@@ -130,6 +152,56 @@ button.small{padding:5px 10px;font-size:.78rem}
 
 <script>
 (function () {
+  var LOCK_USER = "c8b0a401e5182645bcad11c04653d44fcd82db6d6a62430d26886de79dab9677";
+  var LOCK_PASS = "91d89000966075cbe28b0ca85d9d68b2c396674a4ac20ffcf7521b8deaf0c637";
+  var LOCK_KEY = "wszla.auth.ok";
+
+  function hex(buf) {
+    return Array.prototype.map.call(new Uint8Array(buf), function (b) {
+      return ("0" + b.toString(16)).slice(-2);
+    }).join("");
+  }
+  function derive(text, salt) {
+    var enc = new TextEncoder();
+    return crypto.subtle.importKey("raw", enc.encode(text), { name: "PBKDF2" }, false, ["deriveBits"])
+      .then(function (key) {
+        return crypto.subtle.deriveBits({ name: "PBKDF2", salt: enc.encode(salt), iterations: 120000, hash: "SHA-256" }, key, 256);
+      })
+      .then(hex);
+  }
+  function unlock() {
+    var lock = document.getElementById("lock");
+    if (lock) lock.className = "lock hidden";
+  }
+  function initLock() {
+    var lock = document.getElementById("lock");
+    if (!lock) return;
+    if (localStorage.getItem(LOCK_KEY) === "1") { unlock(); return; }
+    var btn = document.getElementById("lockBtn");
+    var err = document.getElementById("lockErr");
+    function tryLogin() {
+      var u = document.getElementById("lockUser").value.trim();
+      var p = document.getElementById("lockPass").value;
+      err.textContent = "";
+      btn.disabled = true;
+      Promise.all([derive(u, "wszla-admin-v1"), derive(p, "wszla-admin-v2")])
+        .then(function (r) {
+          btn.disabled = false;
+          if (r[0] === LOCK_USER && r[1] === LOCK_PASS) {
+            localStorage.setItem(LOCK_KEY, "1");
+            unlock();
+            load();
+          } else {
+            err.textContent = "账号或密码不对";
+          }
+        })
+        .catch(function () { btn.disabled = false; err.textContent = "浏览器不支持校验，换个浏览器试试"; });
+    }
+    btn.addEventListener("click", tryLogin);
+    document.getElementById("lockPass").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") tryLogin();
+    });
+  }
   var REPO = "raimontavarez-web/wszla";
   var FILE = "links/data.json";
   var KEY = "wszla.gh.token";
@@ -278,7 +350,8 @@ button.small{padding:5px 10px;font-size:.78rem}
       .catch(function (e) { say("提交失败：" + e.message, false); });
   };
 
-  load();
+  initLock();
+  if (!document.getElementById("lock") || localStorage.getItem("wszla.auth.ok") === "1") load();
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(function () {});
 })();
 </script>
