@@ -48,7 +48,7 @@
 <main class="blog-wrap">
 <section class="blog-hero">
   <h1>导航</h1>
-  <p>常用站点，按类别整理。搜索框支持中英文。 共 26 个站点，7 个分类。</p>
+  <p id="links-summary">常用站点，按类别整理。搜索框支持中英文。 共 26 个站点，7 个分类。</p>
 </section>
 
 <div class="links-tools">
@@ -302,6 +302,7 @@
   var root = document.getElementById("links");
   var empty = document.getElementById("links-empty");
   var dataEl = document.getElementById("links-data");
+  var summaryEl = document.getElementById("links-summary");
   var active = "all";
 
   function hue(name) {
@@ -345,6 +346,11 @@
         items.map(cardHTML).join("") + "</div></section>";
     });
     root.innerHTML = html;
+    if (summaryEl) {
+      var cnt = 0;
+      cats.forEach(function (c) { cnt += (c.items || []).length; });
+      summaryEl.textContent = (data.subtitle || "") + " 共 " + cnt + " 个站点，" + cats.length + " 个分类。";
+    }
     active = "all";
     apply();
   }
