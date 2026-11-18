@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>域名、证书、收录：一个个人站真正上线要走完的三步 · WSZLA</title>
+<meta name="description" content="文件传到服务器只是开始。域名解析、HTTPS、搜索引擎收录，缺一个都不算&quot;上线&quot;。">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="canonical" href="https://wszla.cn/blog/launch-checklist.html">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="WSZLA">
+<meta property="og:title" content="域名、证书、收录：一个个人站真正上线要走完的三步 · WSZLA">
+<meta property="og:description" content="文件传到服务器只是开始。域名解析、HTTPS、搜索引擎收录，缺一个都不算&quot;上线&quot;。">
+<meta property="og:url" content="https://wszla.cn/blog/launch-checklist.html">
+<meta property="og:image" content="https://wszla.cn/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="WSZLA 博客" href="/blog/feed.xml">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#f7f5f1">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/blog.css">
+
+
+<style>:root{--accent:#ff5a36;--accent-ink:#ffffff;--accent-soft:rgba(255,90,54,0.13);--accent-line:rgba(255,90,54,0.38);--accent-2:#fabb57;--accent-3:#f32390;--r:16px;--page-max:1180px;--font-display:var(--font-sans)}</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"域名、证书、收录：一个个人站真正上线要走完的三步","datePublished":"2026-11-17","dateModified":"2026-11-17","description":"文件传到服务器只是开始。域名解析、HTTPS、搜索引擎收录，缺一个都不算\"上线\"。","inLanguage":"zh-CN","mainEntityOfPage":"https://wszla.cn/blog/launch-checklist.html","author":{"@type":"Person","name":"WSZLA"},"publisher":{"@type":"Organization","name":"WSZLA","url":"https://wszla.cn"}}</script>
+</head>
+<body data-bg="mesh">
+<div class="bg" aria-hidden="true"></div>
+<div class="blog-shell">
+<header class="blog-header">
+  <div class="blog-wrap blog-header-inner">
+    <a class="brand" href="/"><span class="brand-mark">◆</span><span class="brand-text"><strong>WSZLA</strong><small>工具与随笔</small></span></a>
+    <nav class="blog-nav" aria-label="导航">
+      <a href="/">首页</a>
+      <a href="/links/">导航</a>
+      <a href="/blog/" class="is-on">博客</a>
+      <a href="/blog/feed.xml">RSS</a>
+    </nav>
+    <a class="blog-settings-btn" href="/site/?design=1&tab=blog" title="和定制网页共用一套设置">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h9M17 8h3M4 16h4M12 16h8"/><circle cx="15" cy="8" r="2"/><circle cx="10" cy="16" r="2"/></svg>
+      设置
+    </a>
+  </div>
+</header>
+<main class="blog-wrap">
+<article class="post">
+  <header class="post-head">
+    <a class="post-back" href="/blog/">← 全部文章</a>
+    <h1>域名、证书、收录：一个个人站真正上线要走完的三步</h1>
+    <div class="post-meta"><time datetime="2026-11-17">2026 年 11 月 17 日</time><span>·</span><span>2 分钟读完</span></div>
+    <div class="post-tags"><span>上线</span><span>SEO</span></div>
+  </header>
+  <div class="prose"><p>把页面做出来，是最不重要的一步。</p>
+<p>我这次上线，真正花时间的是后面三件事：让域名指过来、让浏览器不再报&quot;不安全&quot;、让搜索引擎知道这儿有个站。</p>
+<h2 id="一-解析">一、解析</h2>
+<p>域名在阿里云，站点托管在 Netlify。需要两条记录：</p>
+<table><thead><tr><th>类型</th><th>主机记录</th><th>值</th></tr></thead><tbody><tr><td>A</td><td><code>@</code></td><td><code>75.2.60.5</code></td></tr><tr><td>CNAME</td><td><code>www</code></td><td><code>你的站点.netlify.app</code></td></tr></tbody></table>
+<p><code>@</code> 是裸域，<code>www</code> 是带前缀的那个。两个都配，用户输哪个都能进。</p>
+<p>我之前域名上还挂着腾讯企业邮的 MX 记录，加 A 记录不会影响它们——A 和 MX 是两条独立的线，邮件走 MX，网页走 A。</p>
+<h2 id="二-证书">二、证书</h2>
+<p>没有 HTTPS 的站在今天约等于不存在：浏览器先给你一个红色警告，搜索引擎也懒得收。</p>
+<p>Netlify 用 Let's Encrypt 自动签，但有个前置条件——它必须能验证这个域名确实指向自己。所以顺序不能反：</p>
+<ol><li>先把解析指过去</li><li>等它生效（我这边十分钟左右）</li><li>再去点&quot;验证 DNS 配置&quot;</li><li>证书自动签发，90 天一轮自动续</li></ol>
+<p>中间我卡了一会儿，原因是解析生效了但托管平台那边的检查还停在旧结果。多点一次验证、等几分钟，就过了。</p>
+<h2 id="三-收录">三、收录</h2>
+<p>这一步最容易被忽略：站能打开 ≠ 能被搜到。</p>
+<p>要做的：</p>
+<ul><li><code>robots.txt</code> 允许抓取，并指向 sitemap</li><li><code>sitemap.xml</code> 列出所有页面</li><li>页面本身有 title、description、canonical，正文在 HTML 里（不能靠 JS 渲染）</li><li>去各家站长平台提交 sitemap</li></ul>
+<p>Bing、Yandex 这类支持 IndexNow，可以直接推 URL，不用注册账号：</p>
+<pre class="code-block"><code class="language-bash">curl &quot;https://api.indexnow.org/indexnow?url=https://example.com/&amp;key=你的key&quot;</code></pre>
+<p>返回 <code>202</code> 就是收下了。百度得老老实实注册站长平台，提交 sitemap，然后等——新站几天到几周都正常。</p>
+<h2 id="一个反直觉的结论">一个反直觉的结论</h2>
+<p>这三件事里，<strong>最贵的不是技术，是等待</strong>。</p>
+<p>DNS 要等，证书要等，收录要等。你能做的只是把每一步做对，然后别反复改配置把已有的验证结果冲掉。</p>
+<p>所以我现在给自己定了个规矩：上线当天只做上线的事，内容第二天再改。</p></div>
+  <nav class="post-nav">
+  <a href="/blog/four-tools.html"><small>上一篇</small><span>桌面上那四个小工具</span></a>
+  <a href="/blog/json-driven-site.html" class="is-next"><small>下一篇</small><span>我用一份 JSON 管住了一个网站</span></a>
+</nav>
+</article>
+</main>
+<footer class="blog-footer">
+  <div class="blog-wrap">
+    <span>© 2026 WSZLA</span>
+    <a href="/blog/feed.xml">订阅 RSS</a>
+  </div>
+</footer>
+</div>
+
+<script>
+(function () {
+  /* 和首页共用一份偏好：主色、深浅色、正文字号 */
+  var p = {};
+  try { p = JSON.parse(localStorage.getItem("wszla.prefs") || "{}"); } catch (e) {}
+  var mq = window.matchMedia("(prefers-color-scheme: dark)");
+  var mode = p.theme === "dark" || p.theme === "light" ? p.theme : (mq.matches ? "dark" : "light");
+  document.documentElement.setAttribute("data-theme", mode);
+  if (p.scale) document.documentElement.style.setProperty("--blog-fs", String(p.scale));
+  if (p.accent) {
+    var v = String(p.accent).replace("#", "");
+    if (v.length === 3) v = v.split("").map(function (c) { return c + c; }).join("");
+    if (/^[0-9a-f]{6}$/i.test(v)) {
+      var r = parseInt(v.slice(0, 2), 16), g = parseInt(v.slice(2, 4), 16), b = parseInt(v.slice(4, 6), 16);
+      var lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+      var st = document.documentElement.style;
+      st.setProperty("--accent", "#" + v);
+      st.setProperty("--accent-soft", "rgba(" + r + "," + g + "," + b + ",0.13)");
+      st.setProperty("--accent-line", "rgba(" + r + "," + g + "," + b + ",0.38)");
+      st.setProperty("--accent-ink", lum > 0.6 ? "#14130f" : "#ffffff");
+    }
+  }
+})();
+</script>
+<nav class="m-nav" aria-label="快捷导航"><a class="m-nav-item" href="/site/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h9M17 8h3M4 16h4M12 16h8"/><circle cx="15" cy="8" r="2"/><circle cx="10" cy="16" r="2"/></svg><span>定制</span></a><a class="m-nav-item" href="/tools/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2 20 7v10l-8 4-8-4V7z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg><span>工具</span></a><a class="m-nav-item is-on" href="/blog/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v18H6.5A2.5 2.5 0 0 1 4 18.5z"/><path d="M8 3v18"/></svg><span>博客</span></a><a class="m-nav-item" href="/about/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8h.01"/></svg><span>关于</span></a></nav>
+<script src="/assets/js/pwa.js"></script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+/* =========================================================
+   Lumen · 博客样式
+   复用 style.css 里的设计令牌，只补文章排版和列表。
+   ========================================================= */
+
+.blog-shell { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
+.blog-wrap { width: min(760px, calc(100% - 40px)); margin-inline: auto; }
+
+/* 头部 */
+.blog-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+}
+.blog-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  height: 64px;
+}
+.blog-nav { display: flex; gap: 4px; margin-left: auto; }
+.blog-nav a {
+  padding: 7px 12px;
+  border-radius: 9px;
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.blog-nav a:hover { color: var(--text); background: var(--surface-2); }
+.blog-nav a.is-on { color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+
+/* 列表页 */
+.blog-hero { padding: clamp(36px, 6vw, 64px) 0 clamp(20px, 3vw, 32px); }
+.blog-hero h1 {
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+}
+.blog-hero p { color: var(--muted); font-size: 1rem; }
+
+.post-list { padding-bottom: clamp(40px, 6vw, 72px); }
+.post-item { border-top: 1px solid var(--line); }
+.post-item:last-child { border-bottom: 1px solid var(--line); }
+.post-link {
+  display: block;
+  padding: 26px 4px 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+.post-link:hover { transform: translateX(3px); }
+.post-date {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.post-title {
+  font-family: var(--font-display, var(--font-sans));
+  font-size: clamp(1.15rem, 2.2vw, 1.42rem);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  transition: color 0.2s ease;
+}
+.post-link:hover .post-title { color: var(--accent); }
+.post-summary { color: var(--muted); font-size: 0.94rem; line-height: 1.65; max-width: 52em; }
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+.post-tags span {
+  padding: 2px 9px;
+  border-radius: 99px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.post-tags em { font-style: normal; font-size: 0.72rem; color: var(--muted); margin-left: 2px; }
+
+/* 文章页 */
+.post { padding: clamp(32px, 5vw, 56px) 0 clamp(48px, 7vw, 80px); }
+.post-head { padding-bottom: 26px; border-bottom: 1px solid var(--line); margin-bottom: 30px; }
+.post-back {
+  display: inline-block;
+  margin-bottom: 20px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.post-back:hover { color: var(--accent); }
+.post-head h1 {
+  font-size: clamp(1.65rem, 3.6vw, 2.3rem);
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+  margin-bottom: 14px;
+}
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* 正文排版 */
+.prose { font-size: calc(1.02rem * var(--blog-fs, 1)); line-height: 1.85; color: var(--text); }
+.prose > * + * { margin-top: 1.15em; }
+.prose h2 {
+  margin-top: 2.1em;
+  margin-bottom: 0.6em;
+  font-size: 1.42rem;
+  letter-spacing: -0.02em;
+  scroll-margin-top: 88px;
+}
+.prose h3 {
+  margin-top: 1.8em;
+  margin-bottom: 0.5em;
+  font-size: 1.16rem;
+  scroll-margin-top: 88px;
+}
+.prose p { color: var(--text); }
+.prose a { color: var(--accent); text-underline-offset: 3px; }
+.prose strong { font-weight: 700; }
+.prose ul, .prose ol { padding-left: 1.3em; }
+.prose li { margin-top: 0.45em; }
+.prose li::marker { color: var(--accent); }
+.prose blockquote {
+  margin: 1.4em 0;
+  padding: 4px 0 4px 18px;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+  font-style: normal;
+}
+.prose blockquote p { color: var(--muted); }
+.prose hr { margin: 2.2em 0; border: 0; border-top: 1px solid var(--line); }
+.prose img { border-radius: 12px; border: 1px solid var(--line); margin: 1.4em 0; }
+
+.prose code {
+  padding: 0.15em 0.4em;
+  border-radius: 5px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+}
+.prose .code-block {
+  margin: 1.5em 0;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  box-shadow: var(--shadow-sm);
+}
+.prose .code-block code {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.86rem;
+  line-height: 1.7;
+  white-space: pre;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.9rem;
+}
+.prose th, .prose td {
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+}
+.prose th { background: var(--surface-2); font-weight: 600; }
+.prose tr:nth-child(even) td { background: var(--surface); }
+
+/* 上一篇 / 下一篇 */
+.post-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 56px;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+}
+.post-nav a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--surface);
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.post-nav a:hover { border-color: var(--accent-line); transform: translateY(-2px); }
+.post-nav a.is-next { text-align: right; align-items: flex-end; }
+.post-nav small { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; }
+.post-nav span { font-size: 0.92rem; font-weight: 600; }
+
+/* 页脚 */
+.blog-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  padding: 22px 0 30px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.blog-footer .blog-wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.blog-footer a { color: var(--muted); text-decoration: none; }
+.blog-footer a:hover { color: var(--accent); }
+
+@media (max-width: 620px) {
+  .blog-header-inner { height: 58px; gap: 10px; }
+  .blog-header-inner .brand-text small { display: none; }
+  .blog-nav { gap: 0; }
+  .blog-nav a { padding: 6px 8px; font-size: 0.8rem; white-space: nowrap; }
+  .blog-nav a[href="/blog/feed.xml"] { display: none; }
+  .blog-settings-btn { padding: 7px; font-size: 0; }
+  .blog-settings-btn svg { width: 18px; height: 18px; }
+  .post-tags { margin-top: 10px; }
+  .post-nav { grid-template-columns: 1fr; }
+  .post-nav a.is-next { text-align: left; align-items: flex-start; }
+}
+
+/* ---------- 博客设置抽屉 ---------- */
+/* 工具页：一页装下四个工具，顶部是锚点链接 */
+.tool-toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 34px; }
+.tool-toc a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.tool-toc a small { font-weight: 400; font-size: 0.72rem; color: var(--muted); }
+.tool-toc a:hover { border-color: var(--accent-line); color: var(--accent); }
+
+.tool-block { margin-top: 34px; padding-top: 30px; border-top: 1px solid var(--line); scroll-margin-top: 88px; }
+.tool-head { margin-bottom: 18px; }
+.tool-head h2 { margin: 10px 0 8px; font-size: 1.5rem; letter-spacing: -0.02em; }
+.tool-summary { color: var(--muted); font-size: 0.95rem; }
+
+.blog-settings-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.blog-settings-btn svg { width: 15px; height: 15px; }
+.blog-settings-btn:hover { color: var(--accent); border-color: var(--accent-line); }
+
+

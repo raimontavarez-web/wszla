@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wszla.cn/sitemap.xml
+Host: https://wszla.cn

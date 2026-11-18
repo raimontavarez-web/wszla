@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>我用一份 JSON 管住了一个网站 · WSZLA</title>
+<meta name="description" content="整站内容是一份配置：改配置就是改站，面板是配置的遥控器，构建脚本把它压成静态页。">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="canonical" href="https://wszla.cn/blog/json-driven-site.html">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="WSZLA">
+<meta property="og:title" content="我用一份 JSON 管住了一个网站 · WSZLA">
+<meta property="og:description" content="整站内容是一份配置：改配置就是改站，面板是配置的遥控器，构建脚本把它压成静态页。">
+<meta property="og:url" content="https://wszla.cn/blog/json-driven-site.html">
+<meta property="og:image" content="https://wszla.cn/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="WSZLA 博客" href="/blog/feed.xml">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#f7f5f1">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/blog.css">
+
+
+<style>:root{--accent:#ff5a36;--accent-ink:#ffffff;--accent-soft:rgba(255,90,54,0.13);--accent-line:rgba(255,90,54,0.38);--accent-2:#fabb57;--accent-3:#f32390;--r:16px;--page-max:1180px;--font-display:var(--font-sans)}</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"我用一份 JSON 管住了一个网站","datePublished":"2026-11-18","dateModified":"2026-11-18","description":"整站内容是一份配置：改配置就是改站，面板是配置的遥控器，构建脚本把它压成静态页。","inLanguage":"zh-CN","mainEntityOfPage":"https://wszla.cn/blog/json-driven-site.html","author":{"@type":"Person","name":"WSZLA"},"publisher":{"@type":"Organization","name":"WSZLA","url":"https://wszla.cn"}}</script>
+</head>
+<body data-bg="mesh">
+<div class="bg" aria-hidden="true"></div>
+<div class="blog-shell">
+<header class="blog-header">
+  <div class="blog-wrap blog-header-inner">
+    <a class="brand" href="/"><span class="brand-mark">◆</span><span class="brand-text"><strong>WSZLA</strong><small>工具与随笔</small></span></a>
+    <nav class="blog-nav" aria-label="导航">
+      <a href="/">首页</a>
+      <a href="/links/">导航</a>
+      <a href="/blog/" class="is-on">博客</a>
+      <a href="/blog/feed.xml">RSS</a>
+    </nav>
+    <a class="blog-settings-btn" href="/site/?design=1&tab=blog" title="和定制网页共用一套设置">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h9M17 8h3M4 16h4M12 16h8"/><circle cx="15" cy="8" r="2"/><circle cx="10" cy="16" r="2"/></svg>
+      设置
+    </a>
+  </div>
+</header>
+<main class="blog-wrap">
+<article class="post">
+  <header class="post-head">
+    <a class="post-back" href="/blog/">← 全部文章</a>
+    <h1>我用一份 JSON 管住了一个网站</h1>
+    <div class="post-meta"><time datetime="2026-11-18">2026 年 11 月 18 日</time><span>·</span><span>2 分钟读完</span></div>
+    <div class="post-tags"><span>建站</span><span>工具</span></div>
+  </header>
+  <div class="prose"><p>这个站最早只是想做一张&quot;门面&quot;，后来发现真正麻烦的不是设计，是<strong>改</strong>——改一句文案要翻三个文件、换一个主色要动一堆十六进制。</p>
+<p>所以我把内容抽成了一份 JSON。</p>
+<h2 id="三层结构">三层结构</h2>
+<p>现在整个站只有三样东西：</p>
+<ol><li><strong>配置</strong>（<code>config.js</code>）：品牌、导航、每一段文案、每个价格、每个问答。</li><li><strong>渲染</strong>（<code>render.js</code>）：配置进，HTML 出，纯函数，不碰 DOM。</li><li><strong>外壳</strong>（<code>main.js</code> / <code>customizer.js</code>）：读写配置、即时重绘、存到 localStorage。</li></ol>
+<p>因为渲染是纯函数，同一份代码能在两个地方跑：浏览器里（实时改）和 Node 里（构建时预渲染）。</p>
+<pre class="code-block"><code class="language-js">// 浏览器
+SF.render(cfg, { instant: true })
+
+// 构建时
+const parts = SF.renderParts(cfg, { mode })</code></pre>
+<h2 id="为什么非要预渲染">为什么非要预渲染</h2>
+<p>纯前端渲染的页面，爬虫拿到的是一张空壳。预览版看着好好的，一搜什么都没有。</p>
+<p>预渲染之后，<code>dist/index.html</code> 里躺着的就是完整正文——标题、价格、问答全在 HTML 里。JavaScript 只负责让它可以被改。</p>
+<blockquote><p>好看是运行时的本事，被搜到是构建时的本事，两件事别混在一起。</p></blockquote>
+<h2 id="面板不是编辑器">面板不是编辑器</h2>
+<p>定制面板不做&quot;保存&quot;这个动作。它只做一件事：改内存里的配置对象，然后让页面重画一次。</p>
+<p>真正的保存发生在两个地方：</p>
+<ul><li>浏览器把它写进 <code>localStorage</code>（你自己的预览）</li><li>你导出 JSON，覆盖 <code>config.js</code>，重新构建（所有人的正式版）</li></ul>
+<p>这样就不会出现&quot;后台数据库改了、线上没变&quot;的经典事故。</p>
+<h2 id="代价">代价</h2>
+<ul><li>多了一个构建步骤：改完必须 <code>node build.mjs</code>，忘了就还是旧站。</li><li>配置没有类型检查，写错字段名不会报错，只会安静地不显示。</li><li>区块只能开关和排序，想做真正奇怪的版式还是得改代码。</li></ul>
+<p>值不值？对我来说值——加一个工具、换一次主色，都只要改一行配置，然后重新拖一次 zip。</p></div>
+  <nav class="post-nav">
+  <a href="/blog/launch-checklist.html"><small>上一篇</small><span>域名、证书、收录：一个个人站真正上线要走完的三步</span></a>
+  <span></span>
+</nav>
+</article>
+</main>
+<footer class="blog-footer">
+  <div class="blog-wrap">
+    <span>© 2026 WSZLA</span>
+    <a href="/blog/feed.xml">订阅 RSS</a>
+  </div>
+</footer>
+</div>
+
+<script>
+(function () {
+  /* 和首页共用一份偏好：主色、深浅色、正文字号 */
+  var p = {};
+  try { p = JSON.parse(localStorage.getItem("wszla.prefs") || "{}"); } catch (e) {}
+  var mq = window.matchMedia("(prefers-color-scheme: dark)");
+  var mode = p.theme === "dark" || p.theme === "light" ? p.theme : (mq.matches ? "dark" : "light");
+  document.documentElement.setAttribute("data-theme", mode);
+  if (p.scale) document.documentElement.style.setProperty("--blog-fs", String(p.scale));
+  if (p.accent) {
+    var v = String(p.accent).replace("#", "");
+    if (v.length === 3) v = v.split("").map(function (c) { return c + c; }).join("");
+    if (/^[0-9a-f]{6}$/i.test(v)) {
+      var r = parseInt(v.slice(0, 2), 16), g = parseInt(v.slice(2, 4), 16), b = parseInt(v.slice(4, 6), 16);
+      var lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+      var st = document.documentElement.style;
+      st.setProperty("--accent", "#" + v);
+      st.setProperty("--accent-soft", "rgba(" + r + "," + g + "," + b + ",0.13)");
+      st.setProperty("--accent-line", "rgba(" + r + "," + g + "," + b + ",0.38)");
+      st.setProperty("--accent-ink", lum > 0.6 ? "#14130f" : "#ffffff");
+    }
+  }
+})();
+</script>
+<nav class="m-nav" aria-label="快捷导航"><a class="m-nav-item" href="/site/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h9M17 8h3M4 16h4M12 16h8"/><circle cx="15" cy="8" r="2"/><circle cx="10" cy="16" r="2"/></svg><span>定制</span></a><a class="m-nav-item" href="/tools/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2 20 7v10l-8 4-8-4V7z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg><span>工具</span></a><a class="m-nav-item is-on" href="/blog/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v18H6.5A2.5 2.5 0 0 1 4 18.5z"/><path d="M8 3v18"/></svg><span>博客</span></a><a class="m-nav-item" href="/about/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8h.01"/></svg><span>关于</span></a></nav>
+<script src="/assets/js/pwa.js"></script>
+</body>
+</html>

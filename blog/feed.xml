@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>WSZLA · 工具与随笔</title>
+    <link>https://wszla.cn/blog/</link>
+    <description>WSZLA 的个人站点：忍野忍、ManifestHub2、抖音续火花助手、ClimberFly 几个自己写的工具，以及关于建站、上线、SEO 和折腾的随笔记录。</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 18 Nov 2026 02:01:19 GMT</lastBuildDate>
+    <item>
+      <title>我用一份 JSON 管住了一个网站</title>
+      <link>https://wszla.cn/blog/json-driven-site.html</link>
+      <guid>https://wszla.cn/blog/json-driven-site.html</guid>
+      <pubDate>Wed, 18 Nov 2026 00:00:00 GMT</pubDate>
+      <description>整站内容是一份配置：改配置就是改站，面板是配置的遥控器，构建脚本把它压成静态页。</description>
+    </item>
+    <item>
+      <title>域名、证书、收录：一个个人站真正上线要走完的三步</title>
+      <link>https://wszla.cn/blog/launch-checklist.html</link>
+      <guid>https://wszla.cn/blog/launch-checklist.html</guid>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 GMT</pubDate>
+      <description>文件传到服务器只是开始。域名解析、HTTPS、搜索引擎收录，缺一个都不算&quot;上线&quot;。</description>
+    </item>
+    <item>
+      <title>桌面上那四个小工具</title>
+      <link>https://wszla.cn/blog/four-tools.html</link>
+      <guid>https://wszla.cn/blog/four-tools.html</guid>
+      <pubDate>Mon, 16 Nov 2026 00:00:00 GMT</pubDate>
+      <description>忍野忍、ManifestHub2、续火花助手、ClimberFly——都是自己写给自己用的东西，顺手搬上了网页。</description>
+    </item>
+  </channel>
+</rss>
