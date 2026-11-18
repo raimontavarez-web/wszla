@@ -210,6 +210,16 @@ button.small{padding:5px 10px;font-size:.78rem}
 
   $("reload").onclick = function () { load(); };
 
+  $("export").onclick = function () {
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "links.json";
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    say("已下载 links.json，替换 content/links.json 后双击「发布网站.bat」。", true);
+  };
+
   $("save").onclick = function () {
     if (!token()) { say("先在上面保存 Token。", false); return; }
     say("提交中…");
