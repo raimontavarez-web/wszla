@@ -198,6 +198,26 @@
           "name": "阿里云",
           "url": "https://www.aliyun.com/?spm=5176.12818093_47.console-base_top-nav.dlogo.3be92cc9QhkbbT",
           "desc": "aliyun.com"
+        },
+        {
+          "name": "团队",
+          "url": "https://u.lceda.cn/account/user/team/detail/projects?team=a0814d144c504c629296cd9408b9b317&orguuid=f725ae1f9ad8466086e19c7b995e8b39&folder=3a5df605c1cd4687bb54c6e0f5a43991&type=myParticipate",
+          "desc": "u.lceda.cn"
+        },
+        {
+          "name": "roundcube webmail",
+          "url": "https://mail.zuhao360.com/?_task=mail&_mbox=INBOX",
+          "desc": "mail.zuhao360.com"
+        },
+        {
+          "name": "企业微信",
+          "url": "https://work.weixin.qq.com/wework_admin/frame#/index",
+          "desc": "work.weixin.qq.com"
+        },
+        {
+          "name": "SnowLuma 控制台",
+          "url": "http://127.0.0.1:5099/",
+          "desc": "仅本机"
         }
       ]
     },
@@ -374,6 +394,11 @@
           "name": "刺客边风",
           "url": "https://www.ckbf88.com/",
           "desc": "ckbf88.com"
+        },
+        {
+          "name": "仪表盘",
+          "url": "https://47.238.146.96/app/dashboard",
+          "desc": "47.238.146.96"
         }
       ]
     },
