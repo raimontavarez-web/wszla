@@ -1,0 +1,39 @@
+name: rebuild-links
+
+on:
+  push:
+    paths:
+      - "links/data.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rebuild-links
+  cancel-in-progress: true
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Rebuild links page from data.json
+        run: node tools/rebuild-links.mjs
+
+      - name: Commit if changed
+        run: |
+          git config user.name "wszla-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add links/index.html
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "links: sync static html [skip ci]"
+            git push
+          fi
