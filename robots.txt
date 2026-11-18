@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
 
 Sitemap: https://wszla.cn/sitemap.xml
 Host: https://wszla.cn

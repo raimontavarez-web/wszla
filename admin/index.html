@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>后台 · WSZLA</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<style>
+:root{--accent:#ff5a36;--accent-ink:#ffffff;--accent-soft:rgba(255,90,54,0.13);--accent-line:rgba(255,90,54,0.38);--accent-2:#fabb57;--accent-3:#f32390;--r:16px;--page-max:1180px;--font-display:var(--font-sans)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--font-sans);line-height:1.6}
+a{color:var(--accent)}
+.wrap{width:min(860px,calc(100% - 32px));margin:0 auto;padding:28px 0 60px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:22px}
+h1{font-size:1.3rem;margin:0}
+h2{font-size:.95rem;margin:26px 0 12px;color:var(--muted);font-weight:600}
+.card{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:16px}
+label{display:flex;flex-direction:column;gap:6px;font-size:.78rem;color:var(--muted);font-weight:600;margin-bottom:10px}
+input[type=text],input[type=password],input[type=url],select,textarea{width:100%;padding:9px 11px;border:1px solid var(--line-strong);border-radius:10px;background:var(--bg);color:var(--text);font-family:inherit;font-size:.9rem}
+textarea{min-height:64px;resize:vertical}
+button{padding:9px 16px;border:1px solid transparent;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer}
+button.ghost{background:transparent;color:var(--text);border-color:var(--line-strong)}
+button.small{padding:5px 10px;font-size:.78rem}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.item{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.item b{font-size:.88rem}
+.item small{color:var(--muted);font-size:.74rem;display:block}
+.item .grow{flex:1;min-width:0}
+.item .del{border:1px solid var(--line-strong);background:transparent;color:var(--muted)}
+.status{margin-top:14px;font-size:.82rem;color:var(--muted);white-space:pre-wrap}
+.ok{color:#0a7d32}
+.err{color:#c0392b}
+.pill{display:inline-block;padding:2px 9px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-size:.7rem;font-weight:600;margin-left:6px}
+.hint{font-size:.78rem;color:var(--muted);margin:6px 0 0}
+@media(max-width:620px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>导航后台</h1>
+    <a href="/links/">← 看导航页</a>
+  </header>
+
+  <div class="card" id="tokenBox">
+    <label>GitHub Token（只保存在这台电脑的浏览器里）
+      <input type="password" id="token" placeholder="github_pat_...">
+    </label>
+    <p class="hint">需要 Fine-grained token：Only select repositories → <b>wszla</b> → Permissions → Contents: Read and write。
+      生成地址：<a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">github.com/settings/tokens</a></p>
+    <button id="saveToken">保存 Token</button>
+    <span class="status" id="tokenStatus"></span>
+  </div>
+
+  <h2>加一个站</h2>
+  <div class="card">
+    <div class="row">
+      <label>分类
+        <select id="cat"></select>
+      </label>
+      <label>名称
+        <input type="text" id="name" placeholder="ChatGPT">
+      </label>
+    </div>
+    <div class="row">
+      <label>网址
+        <input type="url" id="url" placeholder="https://example.com">
+      </label>
+      <label>一句话说明
+        <input type="text" id="desc" placeholder="用来干什么">
+      </label>
+    </div>
+    <label style="flex-direction:row;align-items:center;gap:8px">
+      <input type="checkbox" id="pin" style="width:auto"> 放进「常用」
+    </label>
+    <div class="row" style="align-items:end">
+      <button id="add">添加</button>
+      <button class="ghost" id="newCat">新建分类</button>
+    </div>
+  </div>
+
+  <h2>现有站点 <span id="count" class="pill"></span></h2>
+  <div class="card">
+    <div class="list" id="list"></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button id="save">保存并发布</button>
+      <button class="ghost" id="reload">重新加载</button>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var REPO = "raimontavarez-web/wszla";
+  var FILE = "links/data.json";
+  var KEY = "wszla.gh.token";
+  var data = { title: "导航", subtitle: "", categories: [] };
+  var sha = null;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var statusEl = $("status");
+
+  function say(msg, ok) {
+    statusEl.textContent = msg;
+    statusEl.className = "status " + (ok === true ? "ok" : ok === false ? "err" : "");
+  }
+
+  function b64(str) {
+    var bytes = new TextEncoder().encode(str);
+    var bin = "";
+    for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
+  }
+
+  function token() { return localStorage.getItem(KEY) || ""; }
+
+  function headers() {
+    return { Authorization: "Bearer " + token(), Accept: "application/vnd.github+json" };
+  }
+
+  function load() {
+    say("加载中…");
+    return fetch("/links/data.json?t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        data = d;
+        return fetch("https://api.github.com/repos/" + REPO + "/contents/" + FILE, { headers: headers() })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (f) { if (f) sha = f.sha; })
+          .catch(function () {});
+      })
+      .then(function () {
+        render();
+        say(sha ? "已连接仓库，可以保存。" : "已加载页面数据（保存需要 Token）。", true);
+      })
+      .catch(function (e) { say("加载失败：" + e.message, false); });
+  }
+
+  function render() {
+    var cat = $("cat");
+    cat.innerHTML = data.categories.map(function (c) {
+      return '<option value="' + c.name.replace(/"/g, "&quot;") + '">' + c.name + "</option>";
+    }).join("");
+
+    var list = $("list");
+    var total = 0;
+    list.innerHTML = data.categories.map(function (c) {
+      return c.items.map(function (it, idx) {
+        total++;
+        return '<div class="item"><div class="grow"><b>' + it.name + "</b>" +
+          (it.pin ? '<span class="pill">常用</span>' : "") +
+          "<small>" + (it.desc || "") + " · " + it.url + " · " + c.name + "</small></div>" +
+          '<button class="small del" data-cat="' + c.name.replace(/"/g, "&quot;") + '" data-idx="' + idx + '">删除</button></div>';
+      }).join("");
+    }).join("");
+    $("count").textContent = total;
+  }
+
+  function findCat(name) {
+    for (var i = 0; i < data.categories.length; i++) if (data.categories[i].name === name) return data.categories[i];
+    return null;
+  }
+
+  $("saveToken").onclick = function () {
+    var t = $("token").value.trim();
+    if (!t) { $("tokenStatus").textContent = "先粘贴 token"; return; }
+    localStorage.setItem(KEY, t);
+    $("tokenStatus").textContent = "已保存";
+    load();
+  };
+  $("token").value = token();
+
+  $("add").onclick = function () {
+    var name = $("name").value.trim();
+    var url = $("url").value.trim();
+    if (!name || !url) { say("名称和网址都要填。", false); return; }
+    if (!/^https?:\/\//i.test(url)) { say("网址要以 http:// 或 https:// 开头。", false); return; }
+    var c = findCat($("cat").value);
+    if (!c) { say("先选一个分类。", false); return; }
+    var item = { name: name, url: url, desc: $("desc").value.trim() };
+    if ($("pin").checked) item.pin = true;
+    c.items.push(item);
+    $("name").value = ""; $("url").value = ""; $("desc").value = ""; $("pin").checked = false;
+    render();
+    say("已加入列表，记得点「保存并发布」。");
+  };
+
+  $("newCat").onclick = function () {
+    var name = prompt("新分类名称（例如：自用）");
+    if (!name) return;
+    if (findCat(name)) { say("这个分类已经有了。", false); return; }
+    data.categories.push({ name: name, items: [] });
+    render();
+    $("cat").value = name;
+  };
+
+  $("list").onclick = function (e) {
+    var b = e.target.closest(".del");
+    if (!b) return;
+    var c = findCat(b.getAttribute("data-cat"));
+    if (!c) return;
+    c.items.splice(Number(b.getAttribute("data-idx")), 1);
+    render();
+    say("已移除，记得保存。");
+  };
+
+  $("reload").onclick = function () { load(); };
+
+  $("save").onclick = function () {
+    if (!token()) { say("先在上面保存 Token。", false); return; }
+    say("提交中…");
+    var body = {
+      message: "links: update via admin " + new Date().toISOString().slice(0, 16),
+      content: b64(JSON.stringify(data, null, 2)),
+      branch: "main"
+    };
+    if (sha) body.sha = sha;
+    fetch("https://api.github.com/repos/" + REPO + "/contents/" + FILE, {
+      method: "PUT",
+      headers: Object.assign({ "Content-Type": "application/json" }, headers()),
+      body: JSON.stringify(body)
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok) { say("提交失败：" + (res.j.message || "未知错误"), false); return; }
+        sha = res.j.content.sha;
+        say("已提交。导航页刷新即可看到（数据文件即时生效）。", true);
+      })
+      .catch(function (e) { say("提交失败：" + e.message, false); });
+  };
+
+  load();
+})();
+</script>
+</body>
+</html>
