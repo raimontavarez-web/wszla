@@ -62,12 +62,6 @@
           "name": "regex101",
           "url": "https://regex101.com",
           "desc": "正则调试"
-        },
-        {
-          "name": "deepseek开放平台",
-          "url": "https://platform.deepseek.com/usage",
-          "desc": "开放平台",
-          "pin": true
         }
       ]
     },
@@ -143,16 +137,6 @@
       ]
     },
     {
-      "name": "动漫",
-      "items": [
-        {
-          "name": "动漫",
-          "url": "https://xiaoyakankan.com/cat/13.html",
-          "desc": "看动漫"
-        }
-      ]
-    },
-    {
       "name": "学习",
       "items": [
         {
@@ -169,6 +153,17 @@
           "name": "Coursera",
           "url": "https://www.coursera.org",
           "desc": "在线课程"
+        }
+      ]
+    },
+    {
+      "name": "动漫",
+      "items": [
+        {
+          "name": "动漫",
+          "url": "https://xiaoyakankan.com/cat/13.html",
+          "desc": "看动漫",
+          "pin": true
         }
       ]
     }
