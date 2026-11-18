@@ -6,6 +6,11 @@
 <title>后台 · WSZLA</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="manifest" href="/admin/manifest.webmanifest">
+<meta name="theme-color" content="#ff5a36">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <style>
 :root{--accent:#ff5a36;--accent-ink:#ffffff;--accent-soft:rgba(255,90,54,0.13);--accent-line:rgba(255,90,54,0.38);--accent-2:#fabb57;--accent-3:#f32390;--r:16px;--page-max:1180px;--font-display:var(--font-sans)}
 *{box-sizing:border-box}
@@ -34,7 +39,37 @@ button.small{padding:5px 10px;font-size:.78rem}
 .err{color:#c0392b}
 .pill{display:inline-block;padding:2px 9px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-size:.7rem;font-weight:600;margin-left:6px}
 .hint{font-size:.78rem;color:var(--muted);margin:6px 0 0}
-@media(max-width:620px){.row{grid-template-columns:1fr}}
+.bar{display:flex;gap:10px;margin-top:16px}
+/* ---------- 手机端 ---------- */
+@media (max-width: 680px) {
+  html,body{overflow-x:hidden;max-width:100%}
+  .wrap{width:100%;max-width:100%;padding:14px 12px 96px}
+  .hint,.item small,.status{overflow-wrap:anywhere;word-break:break-word}
+  .bar button{min-width:0}
+  header{padding-bottom:12px;margin-bottom:14px}
+  h1{font-size:1.1rem}
+  h2{font-size:.85rem;margin:20px 0 10px}
+  .card{padding:12px;border-radius:12px}
+  .row{grid-template-columns:1fr;gap:0}
+  label{font-size:.75rem;margin-bottom:8px}
+  input[type=text],input[type=password],input[type=url],select,textarea{padding:11px 12px;font-size:1rem}
+  button{padding:11px 16px;font-size:.92rem}
+  .item{padding:11px 12px;align-items:flex-start}
+  .item b{font-size:.92rem}
+  .item small{font-size:.72rem;line-height:1.5}
+  .item .grow{padding-right:8px}
+  .item .del{padding:9px 13px;border-radius:9px;font-size:.8rem;font-weight:600;border:1px solid var(--line-strong);min-width:56px}
+  #tokenBox .hint{font-size:.72rem}
+  .bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:20;
+    display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(255,255,255,.94);backdrop-filter:blur(12px);
+    border-top:1px solid var(--line);
+  }
+  .bar button{flex:1;padding:13px 0;font-size:.95rem}
+  .bar .ghost.secondary{flex:0 0 88px}
+  .status{font-size:.76rem}
+}
 </style>
 </head>
 <body>
@@ -84,10 +119,10 @@ button.small{padding:5px 10px;font-size:.78rem}
   <h2>现有站点 <span id="count" class="pill"></span></h2>
   <div class="card">
     <div class="list" id="list"></div>
-    <div style="display:flex;gap:10px;margin-top:16px">
+    <div class="bar">
+      <button class="ghost secondary" id="reload">重新加载</button>
+      <button class="ghost secondary" id="export">导出</button>
       <button id="save">保存并发布</button>
-      <button class="ghost" id="reload">重新加载</button>
-      <button class="ghost" id="export">导出 JSON</button>
     </div>
     <div class="status" id="status"></div>
   </div>
@@ -244,6 +279,7 @@ button.small{padding:5px 10px;font-size:.78rem}
   };
 
   load();
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(function () {});
 })();
 </script>
 </body>
