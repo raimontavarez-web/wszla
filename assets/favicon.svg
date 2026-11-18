@@ -1,4 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="16" fill="#ff5a36"/>
-  <path d="M32 14l4.6 12.4L49 32l-12.4 4.6L32 49l-4.6-12.4L15 32l12.4-5.6z" fill="#fff" opacity=".95"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="WSZLA">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff7a45"/>
+      <stop offset="1" stop-color="#ec3e12"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="113" fill="url(#g)"/>
+  <polyline points="96,172 188,348 256,206 324,348 416,172"
+            fill="none" stroke="#fff" stroke-width="58"
+            stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
