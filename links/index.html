@@ -359,8 +359,9 @@
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (fresh) {
       if (!fresh || !dataEl) return;
-      var old = dataEl.textContent.trim();
-      if (JSON.stringify(fresh) !== old) render(fresh);
+      var same = false;
+      try { same = JSON.stringify(JSON.parse(dataEl.textContent)) === JSON.stringify(fresh); } catch (e) {}
+      if (!same) render(fresh);
     })
     .catch(function () {});
 })();
