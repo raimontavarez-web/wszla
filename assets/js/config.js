@@ -40,6 +40,7 @@ window.SiteForge.defaults = {
   nav: [
     { label: "导航", href: "/links/" },
     { label: "影视", href: "https://llc-cage-dancing-mid.trycloudflare.com", external: true },
+    { label: "续火花", href: "https://particular-eds-affiliates-descriptions.trycloudflare.com", external: true },
     { label: "工具", href: "/tools/" },
     { label: "文章", href: "/blog/" },
     { label: "关于", href: "/about/" },
@@ -82,7 +83,7 @@ window.SiteForge.defaults = {
       { tag: "影视索引", title: "鲸幕影视", text: "15555 部番剧电影剧集，14 万集分集索引，筛选、排行、排期与追番。", href: "https://llc-cage-dancing-mid.trycloudflare.com" },
       { tag: "桌面助手", title: "忍野忍", text: "状态面板、启动停止、人格模式、语音和日志，一个窗口全管。" },
       { tag: "入库工具", title: "ManifestHub2", text: "清单批量入库，绿色免安装，拖进去就跑完。" },
-      { tag: "自动化", title: "抖音续火花助手", text: "每天定时给好友发表情码，火花自动续上，不用惦记。" },
+      { tag: "自动化", title: "抖音续火花助手", text: "每天定时给好友发表情码，火花自动续上，不用惦记。网页端可随时手动触发、改目标、看日志。", href: "https://particular-eds-affiliates-descriptions.trycloudflare.com" },
       { tag: "游戏助手", title: "ClimberFly", text: "Climber Animals 的飞天小助手，手残也能上墙。" }
     ]
   },
