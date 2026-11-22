@@ -1,5 +1,5 @@
 /* WSZLA · Service Worker：离线可用 + 快速打开 */
-const VERSION = "wszla-v1";
+const VERSION = "wszla-v2";
 const PRECACHE = [
   "/",
   "/site/",
@@ -51,6 +51,12 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
 
   /* 页面导航：先网络，失败回落缓存，再回落首页 */
+  /* 后台页永远走网络，避免缓存旧版本 */
+  if (url.pathname.startsWith("/admin/")) {
+    event.respondWith(fetch(req));
+    return;
+  }
+
   if (req.mode === "navigate") {
     event.respondWith(
       fetch(req)
