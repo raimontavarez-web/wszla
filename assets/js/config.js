@@ -39,7 +39,7 @@ window.SiteForge.defaults = {
 
   nav: [
     { label: "导航", href: "/links/" },
-    { label: "影视", href: "https://llc-cage-dancing-mid.trycloudflare.com", external: true },
+    { label: "影视", href: "https://video.wszla.cn", external: true },
     { label: "续火花", href: "https://particular-eds-affiliates-descriptions.trycloudflare.com", external: true },
     { label: "工具", href: "/tools/" },
     { label: "文章", href: "/blog/" },
@@ -52,7 +52,7 @@ window.SiteForge.defaults = {
     title: "15555 部影视，",
     highlight: "一个站看完",
     subtitle: "番剧、电影、剧集、综艺、纪录片分类整理，14 万集分集索引，支持筛选、排行、排期与追番。",
-    primary: { label: "进入影视站", href: "https://llc-cage-dancing-mid.trycloudflare.com" },
+    primary: { label: "进入影视站", href: "https://video.wszla.cn" },
     secondary: { label: "看看工具", href: "/tools/" },
     stats: [
       { value: "40+", label: "区块组合" },
@@ -80,7 +80,7 @@ window.SiteForge.defaults = {
     title: "影视站 + 我自己写的小工具",
     subtitle: "第一个是影视索引站，其余几个是日常在用的小工具。",
     items: [
-      { tag: "影视索引", title: "鲸幕影视", text: "15555 部番剧电影剧集，14 万集分集索引，筛选、排行、排期与追番。", href: "https://llc-cage-dancing-mid.trycloudflare.com" },
+      { tag: "影视索引", title: "鲸幕影视", text: "15555 部番剧电影剧集，14 万集分集索引，筛选、排行、排期与追番。", href: "https://video.wszla.cn" },
       { tag: "桌面助手", title: "忍野忍", text: "状态面板、启动停止、人格模式、语音和日志，一个窗口全管。" },
       { tag: "入库工具", title: "ManifestHub2", text: "清单批量入库，绿色免安装，拖进去就跑完。" },
       { tag: "自动化", title: "抖音续火花助手", text: "每天定时给好友发表情码，火花自动续上，不用惦记。网页端可随时手动触发、改目标、看日志。", href: "https://particular-eds-affiliates-descriptions.trycloudflare.com" },
