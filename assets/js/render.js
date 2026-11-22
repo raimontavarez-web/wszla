@@ -210,14 +210,19 @@
     var s = c.showcase;
     var tiles = (s.items || [])
       .map(function (item, i) {
-        return (
-          '<article class="tile reveal" style="--d:' + i * 70 + 'ms">' +
+        /* 有 href 的条目整块可点，渲染成 <a> */
+        var inner =
           '<div class="thumb"><span></span></div>' +
           '<div class="tile-body"><span class="tag">' + esc(item.tag) + "</span>" +
           "<h3>" + esc(item.title) + "</h3>" +
-          "<p>" + esc(item.text) + "</p></div>" +
-          "</article>"
-        );
+          "<p>" + esc(item.text) + "</p></div>";
+        if (item.href) {
+          return (
+            '<a class="tile tile-link reveal" href="' + esc(item.href) + '" style="--d:' + i * 70 + 'ms">' +
+            inner + "</a>"
+          );
+        }
+        return '<article class="tile reveal" style="--d:' + i * 70 + 'ms">' + inner + "</article>";
       })
       .join("");
 

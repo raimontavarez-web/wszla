@@ -39,6 +39,7 @@ window.SiteForge.defaults = {
 
   nav: [
     { label: "导航", href: "/links/" },
+    { label: "影视", href: "https://llc-cage-dancing-mid.trycloudflare.com", external: true },
     { label: "工具", href: "/tools/" },
     { label: "文章", href: "/blog/" },
     { label: "关于", href: "/about/" },
@@ -46,11 +47,11 @@ window.SiteForge.defaults = {
   ],
 
   hero: {
-    eyebrow: "工具 · 随笔 · 自己写的",
-    title: "把想法，变成一张",
-    highlight: "会呼吸的网页",
-    subtitle: "这一版的所有东西都能改：配色、字体、文案、区块开关。点「定制」试试。",
-    primary: { label: "开始定制", href: "customizer" },
+    eyebrow: "影视 · 工具 · 随笔",
+    title: "15555 部影视，",
+    highlight: "一个站看完",
+    subtitle: "番剧、电影、剧集、综艺、纪录片分类整理，14 万集分集索引，支持筛选、排行、排期与追番。",
+    primary: { label: "进入影视站", href: "https://llc-cage-dancing-mid.trycloudflare.com" },
     secondary: { label: "看看工具", href: "/tools/" },
     stats: [
       { value: "40+", label: "区块组合" },
@@ -75,9 +76,10 @@ window.SiteForge.defaults = {
   },
 
   showcase: {
-    title: "我自己在用的几个小工具",
-    subtitle: "没什么宏大叙事，都是解决具体麻烦写出来的东西，装在自己电脑上天天用。",
+    title: "影视站 + 我自己写的小工具",
+    subtitle: "第一个是影视索引站，其余几个是日常在用的小工具。",
     items: [
+      { tag: "影视索引", title: "鲸幕影视", text: "15555 部番剧电影剧集，14 万集分集索引，筛选、排行、排期与追番。", href: "https://llc-cage-dancing-mid.trycloudflare.com" },
       { tag: "桌面助手", title: "忍野忍", text: "状态面板、启动停止、人格模式、语音和日志，一个窗口全管。" },
       { tag: "入库工具", title: "ManifestHub2", text: "清单批量入库，绿色免安装，拖进去就跑完。" },
       { tag: "自动化", title: "抖音续火花助手", text: "每天定时给好友发表情码，火花自动续上，不用惦记。" },
@@ -158,7 +160,7 @@ window.SiteForge.defaults = {
 
   layout: {
     order: ["hero", "cta", "showcase", "posts", "features", "faq", "logos", "pricing", "testimonials"],
-    hidden: ["showcase", "posts", "features", "faq", "logos", "pricing", "testimonials"]
+    hidden: ["posts", "features", "faq", "logos", "pricing", "testimonials"]
   }
 };
 

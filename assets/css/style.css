@@ -1352,3 +1352,10 @@ body.is-panel-open .cf-open { opacity: 0; pointer-events: none; transform: trans
 @media (min-width: 721px) {
   .install-bar { left: auto; right: 20px; bottom: 20px; max-width: 320px; }
 }
+
+
+/* 可点击的工具卡 / 影视入口 */
+a.tile-link{display:block;color:inherit;text-decoration:none;transition:transform .18s ease}
+a.tile-link:hover{transform:translateY(-3px)}
+a.tile-link:hover .thumb span{opacity:.85}
+a.tile-link .tile-body h3::after{content:' →';opacity:.45;font-weight:400}
