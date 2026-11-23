@@ -101,6 +101,34 @@ body[data-bg="grid"] .bg {
 
 body[data-bg="plain"] .bg { opacity: 0; }
 
+/* 图片背景：首页 hub 专用 */
+body[data-bg="image"] .bg {
+  background-image: url("/assets/hub-bg.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 1;
+}
+body[data-bg="image"] .bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 12, 30, 0.28) 0%, rgba(20, 12, 30, 0.55) 100%);
+}
+body[data-bg="image"] .hub,
+body[data-bg="image"] .m-nav { text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45); }
+body[data-bg="image"] .hub-link {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+}
+body[data-bg="image"] .hub h1,
+body[data-bg="image"] .hub-sub,
+body[data-bg="image"] .hub-foot,
+body[data-bg="image"] .hub-intro {
+  color: #fff !important;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 0, 0, 0.7);
+}
+
 
 
 #site { position: relative; z-index: 1; }

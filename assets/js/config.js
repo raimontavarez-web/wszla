@@ -8,7 +8,7 @@ window.SiteForge = window.SiteForge || {};
 window.SiteForge.defaults = {
   meta: {
     title: "WSZLA · 工具与随笔",
-    description: "WSZLA 的个人站点：忍野忍、ManifestHub2、抖音续火花助手、ClimberFly 几个自己写的工具，以及关于建站、上线、SEO 和折腾的随笔记录。",
+    description: "WSZLA 的个人站点：忍野忍、ManifestHub2、ClimberFly 几个自己写的工具，以及关于建站、上线、SEO 和折腾的随笔记录。",
     lang: "zh-CN",
     url: "https://wszla.cn",
     /* IndexNow 提交用的 key：构建时会在根目录生成 <key>.txt */
@@ -40,7 +40,6 @@ window.SiteForge.defaults = {
   nav: [
     { label: "导航", href: "/links/" },
     { label: "影视", href: "https://video.wszla.cn", external: true },
-    { label: "续火花", href: "https://spark.wszla.cn", external: true },
     { label: "工具", href: "/tools/" },
     { label: "文章", href: "/blog/" },
     { label: "关于", href: "/about/" },
@@ -83,7 +82,6 @@ window.SiteForge.defaults = {
       { tag: "影视索引", title: "鲸幕影视", text: "15555 部番剧电影剧集，14 万集分集索引，筛选、排行、排期与追番。", href: "https://video.wszla.cn" },
       { tag: "桌面助手", title: "忍野忍", text: "状态面板、启动停止、人格模式、语音和日志，一个窗口全管。" },
       { tag: "入库工具", title: "ManifestHub2", text: "清单批量入库，绿色免安装，拖进去就跑完。" },
-      { tag: "自动化", title: "抖音续火花助手", text: "每天定时给好友发表情码，火花自动续上，不用惦记。网页端可随时手动触发、改目标、看日志。", href: "https://spark.wszla.cn" },
       { tag: "游戏助手", title: "ClimberFly", text: "Climber Animals 的飞天小助手，手残也能上墙。" }
     ]
   },
